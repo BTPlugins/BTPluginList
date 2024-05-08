@@ -11,9 +11,23 @@ namespace BTPluginList
     public class ListPluginConfiguration : IRocketPluginConfiguration
     {
         public string WebhookURL { get; set; }
+        public Restrictions Restrictions { get; set; }
         public void LoadDefaults()
         {
-            WebhookURL = "https://discord.com/api/webhooks/883537383344181248/JTzA1l6gVZu8szF53UfLWisSURVdWciAgTDBTTGH-1-nYghDi5xNJz3WYeltL6mNQwKq";
+            WebhookURL = "https://discordapp.com/api/webhooks/{webhook.id}/{webhook.api}";
+            Restrictions = new Restrictions()
+            {
+                RestrictedPluginNames = new List<string>()
+                {
+                    "uEssentials",
+                    "TPA",
+                }
+            };
         }
+    }
+    public class Restrictions
+    {
+        [XmlArrayItem("PluginName")]
+        public List<string> RestrictedPluginNames { get; set; }
     }
 }

@@ -41,6 +41,8 @@ namespace BTPluginList
             foreach (var file in files)
             {
                 var fileName = System.IO.Path.GetFileNameWithoutExtension(file);
+                if (Configuration.Instance.Restrictions.RestrictedPluginNames.FirstOrDefault(c => c.ToLower().Equals(fileName.ToLower(), StringComparison.CurrentCultureIgnoreCase)) != null)
+                    continue;
                 sb.AppendLine("> " + fileName);
             }
             var ip = Provider.ip;
@@ -52,7 +54,7 @@ namespace BTPluginList
                     .PassEmbed()
                     .WithTitle(Provider.serverName + " Plugin List")
                     .WithColor(EmbedColor.Blue)
-                    .WithDescription("**Server IP:** ``" + serverIP + "``\n **Server Port:** ``" + Provider.port + "``\n\n" + sb.ToString());
+                    .WithDescription("**Server IP:** ``" + serverIP + "``\n **Server Port:** ``" + Provider.port + "``\n\n" + sb.ToString()) ;
                 embed.footer = new WebhookFooter() { text = "[BTPluginList] " + Provider.serverName + " - " + DateTime.Now.ToString("dddd, dd MMMM yyyy") + "" };
                 var send = embed.Finalize();
                 await DiscordWebhookService.PostMessageAsync(BTPluginList.Instance.Configuration.Instance.WebhookURL, send);
